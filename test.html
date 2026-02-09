@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Debug Test</title>
+    <style>
+        body {
+            font-family: monospace;
+            padding: 20px;
+            background: #f0f0f0;
+        }
+        #logs {
+            background: white;
+            border: 1px solid #ccc;
+            padding: 15px;
+            border-radius: 5px;
+            max-height: 600px;
+            overflow-y: auto;
+        }
+        .log {
+            padding: 5px;
+            margin: 3px 0;
+            border-left: 3px solid #999;
+            padding-left: 10px;
+        }
+        .log.error {
+            border-left-color: red;
+            color: red;
+        }
+        .log.success {
+            border-left-color: green;
+            color: green;
+        }
+        .log.info {
+            border-left-color: blue;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+    <h1>GoGrowth Dashboard - Debug Console</h1>
+    <div id="logs"></div>
+    
+    <script>
+        const logsDiv = document.getElementById('logs');
+        
+        // Intercept console methods
+        const originalLog = console.log;
+        const originalError = console.error;
+        
+        function addLog(message, type = 'info') {
+            const div = document.createElement('div');
+            div.className = `log ${type}`;
+            div.textContent = `[${type.toUpperCase()}] ${message}`;
+            logsDiv.appendChild(div);
+            logsDiv.scrollTop = logsDiv.scrollHeight;
+        }
+        
+        console.log = function(...args) {
+            originalLog.apply(console, args);
+            addLog(args.join(' '), 'info');
+        };
+        
+        console.error = function(...args) {
+            originalError.apply(console, args);
+            addLog(args.join(' '), 'error');
+        };
+        
+        addLog('Debug console initialized', 'success');
+    </script>
+    
+    <script src="js/mockData.js"></script>
+    <script src="js/config.js"></script>
+    <script src="js/sheetsAPI.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>
