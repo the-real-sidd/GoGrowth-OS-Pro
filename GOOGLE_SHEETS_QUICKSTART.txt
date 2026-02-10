@@ -1,0 +1,112 @@
+🚀 SETUP GOOGLE SHEETS AS YOUR BACKEND
+
+════════════════════════════════════════════════════════════════
+
+✅ FILES ALREADY UPDATED:
+  ✓ Backend now supports Google Sheets API
+  ✓ Controllers configured to fetch from sheets
+  ✓ Environment variables ready for credentials
+  ✓ Setup guide created
+
+════════════════════════════════════════════════════════════════
+
+⚡ QUICK SETUP (3 STEPS)
+
+STEP 1: Get Google Sheets API Credentials
+────────────────────────────────────────────────────────────────
+1. Go to: https://console.cloud.google.com
+2. Create new project: "GoGrowth Dashboard"
+3. Search "Google Sheets API" → Click ENABLE
+4. Go to Credentials → Create API Key
+5. Copy your API Key
+
+
+STEP 2: Create Your Google Sheet
+────────────────────────────────────────────────────────────────
+1. Create new Google Sheet: https://sheets.google.com
+2. Rename Sheet 1 to: "Tasks"
+3. Add Sheet 2 and name it: "Resources"
+
+Tasks Sheet Columns (Row 1 - Headers):
+  A: ID | B: Title | C: Description | D: Priority | E: Status | 
+  F: Assigned To | G: Client | H: Deadline | I: Tags | J: Created At | 
+  K: Updated At | L: (empty)
+
+Resources Sheet Columns (Row 1 - Headers):
+  A: ID | B: Title | C: Description | D: Category | E: Type | 
+  F: URL | G: Status | H: Tags
+
+Add sample data in row 2+ (see GOOGLE_SHEETS_SETUP.md for examples)
+
+
+STEP 3: Update server/.env
+────────────────────────────────────────────────────────────────
+Edit: server/.env
+
+Find these lines:
+  GOOGLE_SHEET_ID=YOUR_SHEET_ID_HERE
+  GOOGLE_API_KEY=YOUR_API_KEY_HERE
+
+Replace with:
+  - YOUR_SHEET_ID: From your sheet URL (between /d/ and /edit)
+  - YOUR_API_KEY: From Google Cloud Console Credentials
+
+
+════════════════════════════════════════════════════════════════
+
+📦 INSTALL GOOGLE LIBRARY
+
+Run this command in server/ directory:
+
+cd server
+npm install googleapis
+
+════════════════════════════════════════════════════════════════
+
+🔄 START YOUR SERVERS
+
+Terminal 1 - Backend:
+  cd server
+  npm start
+
+Terminal 2 - Frontend:
+  cd client
+  npm start
+
+Then open: http://localhost:3000
+
+════════════════════════════════════════════════════════════════
+
+📝 EXAMPLE GOOGLE SHEET DATA
+
+Task row (row 2 in Tasks sheet):
+task-1 | Build Dashboard | Create mobile-friendly design | High | In progress | 
+John | TechCorp | 2026-02-14 | design,ui | 2026-01-01 | 2026-02-09 |
+
+Resource row (row 2 in Resources sheet):
+resource-1 | React Docs | Official React documentation | Learning | Documentation | 
+https://react.dev | Active | react,frontend
+
+════════════════════════════════════════════════════════════════
+
+✨ THAT'S IT!
+
+Your app will now:
+  ✅ Read data from Google Sheets in real-time
+  ✅ Display tasks and resources on dashboard
+  ✅ Filter by status, assigned to, client, etc
+  ✅ Show statistics (total, completed, in progress, pending)
+  ✅ Support all existing features without MongoDB
+
+To add/edit/delete data:
+  → Edit the Google Sheet directly
+  → Refresh the app (F5)
+  → Changes appear immediately!
+
+════════════════════════════════════════════════════════════════
+
+📖 FULL SETUP GUIDE: GOOGLE_SHEETS_SETUP.md
+
+Questions? Check the setup guide for troubleshooting and advanced options.
+
+Enjoy! 🎉

@@ -1,0 +1,65 @@
+/* Notification Styles */
+.notification {
+  position: fixed;
+  bottom: var(--spacing-xl);
+  right: var(--spacing-xl);
+  padding: var(--spacing-lg);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--spacing-md);
+  z-index: 1500;
+  animation: slideIn 0.3s ease-out;
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateX(400px);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+.notification-success {
+  background: var(--color-success);
+  color: white;
+}
+
+.notification-error {
+  background: var(--color-danger);
+  color: white;
+}
+
+.notification-info {
+  background: var(--color-info);
+  color: white;
+}
+
+.notification-warning {
+  background: var(--color-warning);
+  color: white;
+}
+
+.btn-close-notification {
+  background: none;
+  border: none;
+  color: inherit;
+  cursor: pointer;
+  font-size: 1.25rem;
+  padding: 0;
+  display: flex;
+  align-items: center;
+}
+
+@media (max-width: 768px) {
+  .notification {
+    right: var(--spacing-md);
+    left: var(--spacing-md);
+    bottom: var(--spacing-md);
+  }
+}

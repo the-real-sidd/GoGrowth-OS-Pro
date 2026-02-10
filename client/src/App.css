@@ -1,0 +1,18 @@
+/* App.css */
+.app {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.main-content {
+  flex: 1;
+  padding: var(--spacing-xl);
+  background: var(--color-bg);
+}
+
+@media (max-width: 768px) {
+  .main-content {
+    padding: var(--spacing-lg);
+  }
+}
