@@ -4,30 +4,27 @@ const jwt = require('jsonwebtoken');
 // Register user
 exports.register = async (req, res) => {
   try {
-    // If using mock data, return mock response
-    if (process.env.USE_MOCK_DATA === 'true') {
-      const mockUser = {
-        _id: '1',
-        name: req.body.name || 'Demo User',
-        email: req.body.email || 'demo@gogrowth.com',
-        role: 'admin'
-      };
-      const token = jwt.sign({ userId: mockUser._id }, process.env.JWT_SECRET || 'secret');
-      return res.status(201).json({ user: mockUser, token });
-    }
-
     const { name, email, password, role } = req.body;
 
-    const existingUser = await User.findOne({ email });
+    // Check if user already exists in memory
+    const existingUser = global.appData.users.find(u => u.email === email);
     if (existingUser) {
       return res.status(400).json({ message: 'User already exists' });
     }
 
-    const user = new User({ name, email, password, role });
-    await user.save();
+    const newUser = {
+      _id: String(Date.now()),
+      name: name || 'New User',
+      email: email,
+      password: password || 'password',
+      role: role || 'user',
+      createdAt: new Date(),
+      updatedAt: new Date()
+    };
+    global.appData.users.push(newUser);
 
-    const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET || 'secret');
-    res.status(201).json({ user, token });
+    const token = jwt.sign({ userId: newUser._id }, process.env.JWT_SECRET || 'secret');
+    res.status(201).json({ user: newUser, token });
   } catch (error) {
     res.status(400).json({ message: error.message });
   }
@@ -36,29 +33,11 @@ exports.register = async (req, res) => {
 // Login user
 exports.login = async (req, res) => {
   try {
-    // If using mock data, return mock response
-    if (process.env.USE_MOCK_DATA === 'true') {
-      const mockUser = {
-        _id: '1',
-        name: 'Demo User',
-        email: 'demo@gogrowth.com',
-        role: 'admin'
-      };
-      const token = jwt.sign({ userId: mockUser._id }, process.env.JWT_SECRET || 'secret', {
-        expiresIn: '24h'
-      });
-      return res.json({ user: mockUser, token });
-    }
-
     const { email, password } = req.body;
 
-    const user = await User.findOne({ email });
+    // Check credentials in memory
+    const user = global.appData.users.find(u => u.email === email);
     if (!user) {
-      return res.status(401).json({ message: 'Invalid credentials' });
-    }
-
-    const isValidPassword = await user.comparePassword(password);
-    if (!isValidPassword) {
       return res.status(401).json({ message: 'Invalid credentials' });
     }
 
@@ -75,18 +54,7 @@ exports.login = async (req, res) => {
 // Get current user
 exports.getCurrentUser = async (req, res) => {
   try {
-    // If using mock data, return mock response
-    if (process.env.USE_MOCK_DATA === 'true') {
-      const mockUser = {
-        _id: '1',
-        name: 'Demo User',
-        email: 'demo@gogrowth.com',
-        role: 'admin'
-      };
-      return res.json(mockUser);
-    }
-
-    const user = await User.findById(req.userId).select('-password');
+    const user = global.appData.users.find(u => u._id === req.userId);
     if (!user) {
       return res.status(404).json({ message: 'User not found' });
     }

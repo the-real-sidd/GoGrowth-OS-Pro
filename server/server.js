@@ -1,34 +1,28 @@
 const express = require('express');
-const mongoose = require('mongoose');
 const cors = require('cors');
 require('dotenv').config();
 
 const app = express();
 
-// Enable mock data mode by default if MongoDB not available
-if (!process.env.USE_MOCK_DATA && !process.env.MONGODB_URI) {
-  process.env.USE_MOCK_DATA = 'true';
-  console.log('ℹ Mock data mode enabled (MongoDB not configured)');
-}
+// Initialize global app data store
+global.appData = {
+  users: [
+    {
+      _id: 'user-1',
+      name: 'Admin User',
+      email: 'admin@example.com',
+      password: 'password123',
+      role: 'admin',
+      createdAt: new Date('2026-01-01'),
+      updatedAt: new Date('2026-01-01')
+    }
+  ]
+};
 
 // Middleware
 app.use(cors());
 app.use(express.json());
 
-// Database Connection (optional if using mock data)
-if (process.env.USE_MOCK_DATA !== 'true') {
-  mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/gogrowth', {
-    serverSelectionTimeoutMS: 5000,
-    socketTimeoutMS: 45000,
-  })
-    .then(() => console.log('✓ MongoDB connected'))
-    .catch(err => {
-      console.warn('⚠ MongoDB connection failed, using mock data mode');
-      process.env.USE_MOCK_DATA = 'true';
-    });
-} else {
-  console.log('✓ Using mock data mode');
-}
 
 // Routes
 app.use('/api/tasks', require('./routes/taskRoutes'));
