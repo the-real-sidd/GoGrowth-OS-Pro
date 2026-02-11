@@ -40,9 +40,9 @@ const Dashboard = () => {
   const calculateStats = () => {
     const stats = {
       total: tasks.length,
-      completed: tasks.filter(t => t.status === 'Completed').length,
-      inProgress: tasks.filter(t => t.status === 'In progress').length,
-      pending: tasks.filter(t => t.status === 'Pending').length
+      completed: tasks.filter(t => t.status && t.status.toLowerCase() === 'completed').length,
+      inProgress: tasks.filter(t => t.status && t.status.toLowerCase() === 'in progress').length,
+      pending: tasks.filter(t => t.status && (t.status.toLowerCase() === 'pending' || t.status.toLowerCase() === 'not started')).length
     };
     setStats(stats);
   };

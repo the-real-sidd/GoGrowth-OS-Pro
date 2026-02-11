@@ -3,12 +3,15 @@ import '../styles/taskCard.css';
 
 const TaskCard = ({ task, onEdit, onDelete }) => {
   const getStatusColor = (status) => {
-    switch (status) {
-      case 'Completed':
+    if (!status) return 'status-pending';
+    const statusLower = status.toLowerCase();
+    switch (statusLower) {
+      case 'completed':
         return 'status-completed';
-      case 'In progress':
+      case 'in progress':
         return 'status-progress';
-      case 'Pending':
+      case 'pending':
+      case 'not started':
         return 'status-pending';
       default:
         return 'status-pending';

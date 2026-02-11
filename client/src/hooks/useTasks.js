@@ -38,7 +38,7 @@ export const useTasks = () => {
       filtered = filtered.filter(t => t.assignedTo === filters.assignedTo);
     }
     if (filters.status !== 'all') {
-      filtered = filtered.filter(t => t.status === filters.status);
+      filtered = filtered.filter(t => t.status && t.status.toLowerCase() === filters.status.toLowerCase());
     }
     if (filters.client !== 'all') {
       filtered = filtered.filter(t => t.client === filters.client);
