@@ -1,22 +1,10 @@
 import React from 'react';
 import '../styles/statistics.css';
 
-const Statistics = ({ stats, onDateFilterChange }) => {
+const Statistics = ({ stats }) => {
   return (
     <div className="stats-header">
       <h2>Overview</h2>
-      <div className="stats-header-right">
-        <select className="date-filter-dropdown" onChange={(e) => onDateFilterChange(e.target.value)}>
-          <option value="all">All Time</option>
-          <option value="today">Today</option>
-          <option value="yesterday">Yesterday</option>
-          <option value="this-week">This Week</option>
-          <option value="last-week">Last Week</option>
-          <option value="this-month">This Month</option>
-          <option value="last-month">Last Month</option>
-          <option value="custom">Custom Range</option>
-        </select>
-      </div>
 
       <div className="stats-bar">
         <div className="stat-card">

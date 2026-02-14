@@ -104,23 +104,23 @@ class GoogleSheetsService {
       const values = [
         [
           id, // ID
-          taskData.title,
+          taskData.task,
           taskData.description,
           taskData.priority,
           taskData.status,
           taskData.assignedTo,
           taskData.client,
           taskData.deadline,
-          taskData.tags ? taskData.tags.join(', ') : '',
+          taskData.tags ? (typeof taskData.tags === 'string' ? taskData.tags : taskData.tags.join(', ')) : '',
           new Date().toISOString(),
           new Date().toISOString(),
-          '' // Empty column for safety
+          taskData.remarks || '' // remarks column
         ]
       ];
 
       await this.sheets.spreadsheets.values.append({
         spreadsheetId: this.spreadsheetId,
-        range: `${this.tasksSheetName}!A:L`,
+        range: `${this.tasksSheetName}!A:M`,
         valueInputOption: 'USER_ENTERED',
         resource: { values }
       });
@@ -128,7 +128,7 @@ class GoogleSheetsService {
       return { _id: id, ...taskData, createdAt: new Date(), updatedAt: new Date() };
     } catch (error) {
       console.error('Error creating task in Google Sheets:', error);
-      throw new Error('Failed to create task');
+      throw new Error('Failed to create task: ' + error.message);
     }
   }
 

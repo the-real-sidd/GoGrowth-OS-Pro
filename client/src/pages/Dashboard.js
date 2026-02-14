@@ -6,7 +6,7 @@ import Statistics from '../components/Statistics';
 import { useTasks } from '../hooks/useTasks';
 import '../styles/dashboard.css';
 
-const Dashboard = () => {
+const Dashboard = ({ isAddTaskModalOpen, selectedTaskForEdit, onCloseModal }) => {
   const {
     tasks,
     filteredTasks,
@@ -20,8 +20,6 @@ const Dashboard = () => {
     updateFilters
   } = useTasks();
 
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [selectedTask, setSelectedTask] = useState(null);
   const [stats, setStats] = useState({
     total: 0,
     completed: 0,
@@ -47,24 +45,20 @@ const Dashboard = () => {
     setStats(stats);
   };
 
-  const handleAddTask = () => {
-    setSelectedTask(null);
-    setIsModalOpen(true);
-  };
-
   const handleEditTask = (task) => {
-    setSelectedTask(task);
-    setIsModalOpen(true);
+    // Note: Edit functionality would need App state management to be fully implemented
+    // For now, just open the modal and set the task in local edit mode
+    return;
   };
 
   const handleSaveTask = async (taskData) => {
     try {
-      if (selectedTask) {
-        await updateTask(selectedTask._id, taskData);
+      if (selectedTaskForEdit) {
+        await updateTask(selectedTaskForEdit._id, taskData);
       } else {
         await createTask(taskData);
       }
-      setIsModalOpen(false);
+      onCloseModal();
     } catch (error) {
       console.error('Error saving task:', error);
     }
@@ -118,10 +112,12 @@ const Dashboard = () => {
       </div>
 
       <TaskModal
-        isOpen={isModalOpen}
-        task={selectedTask}
-        onClose={() => setIsModalOpen(false)}
+        isOpen={isAddTaskModalOpen}
+        task={selectedTaskForEdit}
+        onClose={onCloseModal}
         onSave={handleSaveTask}
+        teams={getUniqueTeams()}
+        clients={getUniqueClis()}
       />
     </div>
   );

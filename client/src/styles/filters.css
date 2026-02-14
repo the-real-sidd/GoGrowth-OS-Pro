@@ -1,6 +1,7 @@
 /* Filters Panel Styles */
 .filters-panel {
   background: var(--color-bg-secondary);
+  height: fit-content;
   border: 1px solid var(--color-border);
   border-radius: var(--radius-lg);
   padding: var(--spacing-lg);

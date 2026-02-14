@@ -15,7 +15,8 @@ function App() {
   const [darkMode, setDarkMode] = useState(localStorage.getItem('darkMode') === 'true');
   const [notification, setNotification] = useState(null);
   const [loading, setLoading] = useState(false);
-  const [showAddTaskModal, setShowAddTaskModal] = useState(false);
+  const [isAddTaskModalOpen, setIsAddTaskModalOpen] = useState(false);
+  const [selectedTaskForEdit, setSelectedTaskForEdit] = useState(null);
 
   // Mock user - TODO: Replace with real auth when database is ready
   const user = {
@@ -59,6 +60,16 @@ function App() {
     setNotification({ message, type });
   };
 
+  const handleAddTaskClick = () => {
+    setIsAddTaskModalOpen(true);
+    setSelectedTaskForEdit(null);
+  };
+
+  const handleCloseModal = () => {
+    setIsAddTaskModalOpen(false);
+    setSelectedTaskForEdit(null);
+  };
+
   if (loading) {
     return <Loader isVisible={true} />;
   }
@@ -76,14 +87,23 @@ function App() {
         <Header
           currentUser={user}
           onLogout={handleLogout}
-          onAddTask={() => setShowAddTaskModal(true)}
+          onAddTask={handleAddTaskClick}
           darkMode={darkMode}
           onThemeChange={() => setDarkMode(!darkMode)}
         />
 
         <main className="main-content">
           <Routes>
-            <Route path="/dashboard" element={<Dashboard />} />
+            <Route 
+              path="/dashboard" 
+              element={
+                <Dashboard 
+                  isAddTaskModalOpen={isAddTaskModalOpen}
+                  selectedTaskForEdit={selectedTaskForEdit}
+                  onCloseModal={handleCloseModal}
+                />
+              } 
+            />
             <Route path="/resources" element={<Resources />} />
             <Route path="/" element={<Navigate to="/dashboard" />} />
           </Routes>

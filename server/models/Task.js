@@ -11,8 +11,8 @@ const taskSchema = new mongoose.Schema({
   },
   status: {
     type: String,
-    enum: ['Pending', 'In progress', 'Completed'],
-    default: 'Pending'
+    enum: ['Not Started', 'Pending', 'In progress', 'Completed'],
+    default: 'Not Started'
   },
   client: {
     type: String,

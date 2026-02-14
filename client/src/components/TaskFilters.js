@@ -68,6 +68,65 @@ const TaskFilters = ({ filters, teams, clients, onFilterChange }) => {
           ))}
         </select>
       </div>
+
+      <div className="filter-group">
+        <label htmlFor="dateRange">Date Range</label>
+        <select 
+          id="dateRange" 
+          name="dateRange"
+          value={filters.dateRange || 'all'}
+          onChange={handleInputChange}
+        >
+          <option value="all">All Dates</option>
+          <option value="today">Today</option>
+          <option value="this-week">This Week</option>
+          <option value="this-month">This Month</option>
+          <option value="last-7-days">Last 7 Days</option>
+          <option value="last-30-days">Last 30 Days</option>
+          <option value="custom">Custom Range</option>
+        </select>
+      </div>
+
+      {filters.dateRange === 'custom' && (
+        <>
+          <div className="filter-group">
+            <label htmlFor="dateFrom">From Date</label>
+            <input
+              type="date"
+              id="dateFrom"
+              name="dateFrom"
+              value={filters.dateFrom || ''}
+              onChange={handleInputChange}
+            />
+          </div>
+          <div className="filter-group">
+            <label htmlFor="dateTo">To Date</label>
+            <input
+              type="date"
+              id="dateTo"
+              name="dateTo"
+              value={filters.dateTo || ''}
+              onChange={handleInputChange}
+            />
+          </div>
+        </>
+      )}
+
+      <div className="filter-group">
+        <label htmlFor="sort">Sort By</label>
+        <select 
+          id="sort" 
+          name="sort"
+          value={filters.sort || 'newest'}
+          onChange={handleInputChange}
+        >
+          <option value="newest">Newest First</option>
+          <option value="oldest">Oldest First</option>
+          <option value="deadline-asc">Deadline (Earliest)</option>
+          <option value="deadline-desc">Deadline (Latest)</option>
+          <option value="priority">Priority (High to Low)</option>
+        </select>
+      </div>
     </div>
   );
 };
